@@ -27,8 +27,8 @@ const queryMenus = async (ctx, params) => {
         selectParams.menuType = 1
     }
     //If the username is admin, all menu permissions are obtained by default
-    if (menuNum || userList.user_name == 'admin') {
-        if (userList.user_name == 'admin') {
+    if (menuNum || userList.username == 'admin') {
+        if (userList.username == 'admin') {
 
             const exitMenu = await Menus.findOne({ name: 'Menu management' })
             if (!exitMenu) {
