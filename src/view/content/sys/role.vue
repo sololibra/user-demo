@@ -60,7 +60,7 @@
       type="success"
       @click="handlePrem"
       :disabled="checkedRow ? false : true"
-      >确认授权</el-button
+      >Confirm</el-button
     >
     <el-dialog
       :title="action ? 'Edit role' : 'Add role'"
