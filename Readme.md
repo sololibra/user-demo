@@ -15,7 +15,8 @@
 
 ### Database
 
-- mongodb
+- mongodb<br>
+   The script file is ./db/mongo.sql
 
 ## Intro
 
