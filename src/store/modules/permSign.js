@@ -7,7 +7,7 @@ export default {
     },
     mutations: {
         setPermSign(state, data) {
-            console.log(data)
+            console.log('setPermSign:::',data)
             state.permSign = data
         }
     },
@@ -15,11 +15,11 @@ export default {
         async login({commit}) {
             const user = Cookie.get("user")
             if (!user) return
-            // const loginForm = {
-            //     username: user.split(',')[0],
-            //     password: user.split(',')[1],
-            // }
-            const { errorCode, data } = await http.login({ username:user, isShowToast: true })
+            const loginForm = {
+                username: user.split(',')[0],
+                password: user.split(',')[1],
+            }
+            const { errorCode, data } = await http.login({ ...loginForm, isShowToast: true })
             if (errorCode === '0000') {
                 //返回token与按钮权限permSign
                 Cookie.set('token', data.token)

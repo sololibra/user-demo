@@ -7,7 +7,6 @@ export default {
     },
     mutations: {
         setNavTree(state, data) {
-            
             state.navTree = data
         },
         setCollapse(state,data){
@@ -17,7 +16,7 @@ export default {
     actions: {
        async addMenuList({commit},menuType) {
            /**
-            * @params {Number} menu 是否获取按钮列表 0：获取 1：不获取
+            * @params {Number} menu Whether to get the button list 0: get 1: not get
             */
             const { errorCode, data } = await $http.menuList({menuType});
             if (errorCode != "0000") {
@@ -25,7 +24,7 @@ export default {
             }  
 
             if(menuType==1){
-            //设置侧边栏菜单
+            //Set up sidebar menu
             commit('setNavTree',data)
             }
             return data

@@ -26,7 +26,7 @@
       highlight-current-row
       @current-change="handleCurrentChange"
     >
-      <el-table-column prop="roleName" label="角色名称ROLE NAME"> </el-table-column>
+      <el-table-column prop="roleName" label="ROLE NAME"> </el-table-column>
       <el-table-column prop="remark" label="REMARK"> </el-table-column>
       <el-table-column prop="updateTime" label="UPDATE AT"> </el-table-column>
       <el-table-column label="OPERATE" fixed="right" width="150">
@@ -133,8 +133,8 @@ export default {
       checkedRow: "",
       roleRule: {
         roleName: [
-          { required: true, message: "请输入角色名", trigger: "blur" },
-          { min: 2, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" },
+          { required: true, message: "Please enter the role name", trigger: "blur" },
+          { min: 2, max: 5, message: "3 to 5 characters long", trigger: "change" },
         ],
       }
     };
@@ -157,7 +157,7 @@ export default {
       if (errorCode === "0000") {
         this.$message({
           type: "success",
-          message: "操作成功",
+          message: "Successful operation",
         });
         this.handleQuery();
         this.$refs["roleForm"].resetFields();
@@ -174,22 +174,22 @@ export default {
       if (errorCode === "0000") {
         this.$message({
           type: "success",
-          message: "删除成功",
+          message: "Successfully deleted",
         });
         this.handleQuery();
       }
     },
-    //确认授权 类型为button需传入权限标识permSign
+    //To confirm that the authorization type is button, you need to pass in the permission ID permSign
     async handlePrem() {
       const halfKeys = this.$refs.tree.getHalfCheckedKeys();
       const checkedKeys = this.$refs.tree.getCheckedKeys();
       const checkedNodes = this.$refs.tree.getCheckedNodes();
-      //菜单集合
+      //Menu collection
       const permId = halfKeys.concat(checkedKeys);
-      //权限标识
+      //permission tag
       let permSign = [];
       checkedNodes.forEach((item) => {
-        //如果是按钮则加入标识
+        //If it is a button, add the logo
         if (item.menuType == 2) {
           permSign.push(item.limitCode);
         }
@@ -204,24 +204,24 @@ export default {
       if (errorCode === "0000") {
         this.$message({
           type: "success",
-          message: "权限设置成功",
+          message: "Permissions set successfully",
         });
         await this.handleQuery();
-        for (var item in this.roleData) {
+        for (let item in this.roleData) {
           if (this.checkedRow._id == this.roleData[item]._id) {
             this.$refs.singleTable.setCurrentRow(this.roleData[item]);
           }
         }
       }
     },
-    //获取角色
+    //Get roles
     async handleQuery() {
       const { errorCode, data } = await this.$http.roleList(this.roleForm);
       if (errorCode === "0000") {
         this.roleData = data.rolelist;
       }
     },
-    //选中列
+    //Selected column
     handleCurrentChange(row) {
       if (!row) return;
       this.roleid = row._id;
@@ -233,10 +233,10 @@ export default {
       //     this.menuList = data;
       //   }
     },
-    //获取全量菜单
+    //Get the full menu
     async queryAllMenu() {
       /**
-       * @param {number} 1代表获取全部菜单
+       * @param {number} 1 means get full menu
        */
       const { errorCode, data } = await this.$http.menuList({ menuNum: 1 });
       if (errorCode === "0000") {

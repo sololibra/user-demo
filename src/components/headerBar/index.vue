@@ -27,7 +27,7 @@ export default {
           type: "warning",
         });
         Cookies.remove("token");
-        Cookies.remove("user");
+        // Cookies.remove("user");
         sessionStorage.clear();
         this.$router.push("/login");
       } catch (err) {

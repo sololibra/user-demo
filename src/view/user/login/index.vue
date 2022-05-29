@@ -10,6 +10,7 @@
             prop="username"
             size="large"
             autocomplete="new-password"
+            maxlength="20"
           >
             <i slot="prefix" class="el-input__icon el-icon-user"></i
           ></el-input>
@@ -20,8 +21,9 @@
             type="password"
             size="large"
             prop="password"
-            placeholder="密码"
+            placeholder="password"
             autocomplete="new-password"
+            maxlength="20"
           >
             <i slot="prefix" class="el-input__icon el-icon-lock"></i
           ></el-input>
@@ -77,7 +79,7 @@ export default {
         Cookie.set("token", data.token);
         Cookie.set(
           "user",
-          `${this.loginForm.username}`
+          `${this.loginForm.username},${this.loginForm.password}`
         );
         if (this.remember) {
           localStorage.setItem("user", JSON.stringify(this.loginForm));

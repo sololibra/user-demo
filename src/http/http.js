@@ -8,68 +8,68 @@ const showStatus = (status) => {
     let message = ''
     switch (status) {
         case 400:
-            message = '请求错误(400)'
+            message = 'Request error(400)'
             break
         case 401:
-            message = '未授权，请重新登录(401)'
+            message = 'Unauthorized, please log in again(401)'
             break
         case 403:
-            message = '拒绝访问(403)'
+            message = 'Access denied(403)'
             break
         case 404:
-            message = '请求出错(404)'
+            message = 'Error in request(404)'
             break
         case 408:
-            message = '请求超时(408)'
+            message = 'Request timed out(408)'
             break
         case 500:
-            message = '服务器错误(500)'
+            message = 'Server error(500)'
             break
         case 501:
-            message = '服务未实现(501)'
+            message = 'Service not implemented(501)'
             break
         case 502:
-            message = '网络错误(502)'
+            message = 'Network Error(502)'
             break
         case 503:
-            message = '服务不可用(503)'
+            message = 'Service is not available(503)'
             break
         case 504:
-            message = '网络超时(504)'
+            message = 'Network timeout(504)'
             break
         case 505:
-            message = 'HTTP版本不受支持(505)'
+            message = 'HTTP version not supported(505)'
             break
         default:
-            message = `连接出错(${status})!`
+            message = `Connection error(${status})!`
     }
-    return `${message}，请检查网络或联系管理员！`
+    return `${message}，Please check the network or contact the administrator！`
 }
 
 const service = axios.create({
     method: 'get',
-    //判断是请求代理服务器还是直接请求后端服务，直接请求需后端配置跨域
+    //Determine whether to request the proxy server or directly request the back-end service. The direct request requires the back-end to configure cross-domain
     baseURL: process.env.VUE_APP_API_MODE === 'proxy' ? `${process.env.VUE_APP_SERVER}:${process.env.VUE_APP_SERVER_PORT}` : `${process.env.VUE_APP_API}`,
     headers: {
         'Content-Type': 'application/json;charset=utf-8'
     },
     timeout: 30000
 })
-//请求是否使用全局loading 默认使用
+//Whether the request uses global loading by default
 let loading = true
-//是否使用默认统一全局弹窗，默认使用
+//Whether to use the default unified global pop-up window, the default use
 let isShowToast = true
 let loadingInstance;
-// 请求拦截器
+// Request interceptor
 service.interceptors.request.use((config) => {
     let { data } = config
     if (data.isShowToast) { isShowToast = data.isShowToast; delete data.isShowToast }
     if (data.loading) { loading = data.loading; delete data.loading }
-    //可以开启全局loading
+    //Global loading
     if (loading) loadingInstance = Loading.service({ background: 'rgba(0, 0, 0, 0.3)' });
 
     const token = Cookies.get('token')
-    //判断token
+    //Judgment token
     if (token) {
         config.headers.token = token
     } else {
@@ -80,23 +80,23 @@ service.interceptors.request.use((config) => {
     }
     return config
 }, (error) => {
-    // 错误抛到业务代码
-    //关闭弹窗
+    //Error thrown to business code
+    //Close popup
     if (loading) loadingInstance.close()
     error.data = {}
-    error.data.message = '服务器异常，请联系管理员！'
+    error.data.message = 'The server is abnormal, please contact the administrator！'
     return Promise.resolve(error)
 })
 
-// 响应拦截器
+// Response interceptor
 service.interceptors.response.use((response) => {
     const status = response.status
     let message = ''
-    //关闭弹窗
+
     if (loading) loadingInstance.close()
 
     if (status < 200 || status >= 300) {
-        // 处理http错误，抛到业务代码
+        //Handle http errors and throw them to business code
         message = showStatus(status)
         if (isShowToast) {
             Message({
@@ -120,11 +120,11 @@ service.interceptors.response.use((response) => {
                 case '1004':
                     Cookies.remove('token')
                     removeAll()
-                    message = "token校验失败"
+                    message = "Token verification failed"
                     router.push('/login')
                     break
                 case '1002':
-                    message = "用户名或密码错误"
+                    message = "wrong user name or password"
                     break
                 default:
                     message = response.data.message
@@ -139,16 +139,15 @@ service.interceptors.response.use((response) => {
     }
     return response.data
 }, (error) => {
-    // 错误抛到业务代码
+    // Error thrown to business code
     let errorMsg = {}
     errorMsg.errorCode = -1
     errorMsg.data = null
     errorMsg.message = error
     Message({
-        message: '服务器异常，请联系管理员！',
+        message: 'The server is abnormal, please contact the administrator！',
         type: 'warning'
     })
-    //关闭弹窗
     if (loading) loadingInstance.close()
     return Promise.resolve(errorMsg)
 })
