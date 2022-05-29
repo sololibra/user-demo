@@ -4,6 +4,7 @@ const Counter = require('../db/models/counterSchema')
 const { successModel, errorModel, code } = require("../utils/stateModel")
 const { getMenuTree, delMenuTree } = require('../utils/operatMenu')
 const jwt = require("jsonwebtoken")
+const {debug} = require("nodemon/lib/utils");
 const SECRET = process.env.JWT_SECRET
 //Query menu list
 
@@ -41,9 +42,9 @@ const queryMenus = async (ctx, params) => {
                 })
             }
         }
-        conditionParms = {}
+        conditionParams = {}
     } else {
-        conditionParms = { _id: { $in: menuIds } }
+        conditionParams = { _id: { $in: menuIds } }
     }
     const res = await Menus.find({ ...selectParams, ...conditionParams }).sort({ 'orderNum': 1 })
 
