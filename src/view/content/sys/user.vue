@@ -19,7 +19,7 @@
         <el-button type="primary " perm="user-add" @click="addUser">Add new</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button type="danger" @click="handleReset($refs['userForm'])">Reset</el-button>
+          <el-button type="danger" @click="handleReset($refs['userForm'])">Reset</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -35,6 +35,7 @@
         :label="item.label"
         :width="item.width"
         :formatter="item.formatter"
+        :sortable="item.sortable"
       >
       </el-table-column>
       <el-table-column  label="ROLE">
@@ -170,14 +171,17 @@ export default {
         {
           prop: "username",
           label: "NAME",
+          sortable:true
         },
         {
           prop: "mobile",
           label: "MOBILE",
+          sortable:false
         },
         {
           prop: "userEmail",
           label: "EMAIL",
+          sortable:false
         },
         {
           prop: "sex",
